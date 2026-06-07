@@ -13,6 +13,7 @@ export const extend = [
     // this.setting(key), the Save-integrated bidi stream.
     .customSetting(function (this: any) {
       return FontPicker.component({
+        slot: 'body',
         stream: this.setting(KEY + 'body_font'),
         label: t('body_font_label'),
         help: t('body_font_help'),
@@ -21,6 +22,7 @@ export const extend = [
     }, 20)
     .customSetting(function (this: any) {
       return FontPicker.component({
+        slot: 'heading',
         stream: this.setting(KEY + 'heading_font'),
         label: t('heading_font_label'),
         help: t('heading_font_help'),

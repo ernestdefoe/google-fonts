@@ -35,4 +35,102 @@
       letter-spacing: -0.01em;
     }
   }
+
+  &-switch {
+    margin-top: 10px;
+    padding-left: 0;
+    color: var(--muted-color, #8e9094);
+
+    i {
+      margin-right: 6px;
+    }
+  }
+
+  &-error {
+    margin-top: 8px;
+    color: var(--alert-error-color, #b34a4a);
+    font-size: 13px;
+  }
+
+  // ---- Upload (self-hosted) mode ----
+  &-hint {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: var(--control-bg, rgba(0, 0, 0, 0.05));
+    color: var(--muted-color, #8e9094);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  &-familyLabel {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  &-faces {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+  }
+
+  &-face {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border: 1px solid var(--control-bg, rgba(0, 0, 0, 0.1));
+    border-radius: 6px;
+
+    & + & {
+      margin-top: 6px;
+    }
+  }
+
+  &-faceWeight {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+
+  &-faceName {
+    margin-left: 6px;
+    font-weight: 400;
+    color: var(--muted-color, #8e9094);
+  }
+
+  &-faceRemove {
+    flex: 0 0 auto;
+  }
+
+  &-addRow {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    margin-top: 12px;
+  }
+
+  &-weightSelect {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 150px;
+  }
+
+  &-addBtn {
+    flex: 0 0 auto;
+    cursor: pointer;
+
+    input[type='file'] {
+      display: none;
+    }
+
+    &.disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    i {
+      margin-right: 6px;
+    }
+  }
 }
