@@ -309,6 +309,14 @@ export default class FontPicker extends Component<FontPickerAttrs> {
         this.faces = Array.isArray(attrs.faces) ? attrs.faces : [];
         this.writeFacesToSettings();
         this.pendingWeight = this.firstUnusedWeight();
+        // Removing the last weight reverts the slot to a clean, empty Google
+        // selector rather than leaving a dangling custom family name.
+        if (this.faces.length === 0) {
+          this.attrs.stream('');
+          this.saveFamily();
+          this.mode = 'google';
+          FontPicker.ensureGooglePreview('');
+        }
         this.refreshUploadPreview();
         m.redraw();
       })

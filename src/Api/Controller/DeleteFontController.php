@@ -55,9 +55,12 @@ class DeleteFontController implements RequestHandlerInterface
             $weightRaw = Arr::get($body, 'weight');
 
             if ($weightRaw === null || $weightRaw === '') {
-                // Remove the whole slot.
+                // Remove the whole slot, including its (custom, upload-derived)
+                // family name — otherwise the now-faceless slot would fall back
+                // to Google mode and request a non-existent family.
                 $this->deleteFiles($faces);
                 $faces = [];
+                $this->settings->set('ernestdefoe-google-fonts.' . $slot . '_font', '');
             } else {
                 $weight = $this->assertWeight($weightRaw);
                 if (isset($faces[$weight])) {
