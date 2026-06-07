@@ -1,0 +1,36 @@
+{
+    "name": "ernestdefoe/google-fonts",
+    "description": "Use any Google Font on your Flarum 2 forum — pick a body font and a heading font from the full Google Fonts library, applied site-wide.",
+    "type": "flarum-extension",
+    "license": "MIT",
+    "keywords": ["flarum", "extension", "google-fonts", "fonts", "typography", "theme"],
+    "authors": [
+        {
+            "name": "Ernestdefoe",
+            "email": "ernestdefoe@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/ernestdefoe/google-fonts/issues",
+        "source": "https://github.com/ernestdefoe/google-fonts"
+    },
+    "require": {
+        "flarum/core": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ErnestDefoe\\GoogleFonts\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Google Fonts",
+            "category": "theme",
+            "icon": {
+                "name": "fas fa-font",
+                "backgroundColor": "#4285F4",
+                "color": "#ffffff"
+            }
+        }
+    }
+}

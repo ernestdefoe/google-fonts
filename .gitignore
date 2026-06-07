@@ -1,0 +1,4 @@
+
+node_modules
+js/dist/*.js.LICENSE.txt
+.DS_Store
