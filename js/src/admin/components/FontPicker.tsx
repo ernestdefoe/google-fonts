@@ -331,8 +331,14 @@ export default class FontPicker extends Component<FontPickerAttrs> {
     });
   }
 
+  // The last family value we persisted, so a re-fired onchange/blur on an
+  // unchanged value doesn't round-trip a redundant POST.
+  private lastSavedFamily: string | null = null;
+
   private saveFamily(): void {
     const family = (this.attrs.stream() || '').trim();
+    if (family === this.lastSavedFamily) return;
+    this.lastSavedFamily = family;
     app
       .request<any>({
         method: 'POST',
@@ -343,12 +349,17 @@ export default class FontPicker extends Component<FontPickerAttrs> {
         const saved = res?.data?.attributes?.family ?? family;
         // Sync the deferred-save baseline so the Save button stays clean and
         // reflect the server's sanitised value.
+        this.lastSavedFamily = saved;
         this.attrs.stream(saved);
         app.data.settings[KEY + this.attrs.slot + '_font'] = saved;
         this.refreshUploadPreview();
         m.redraw();
       })
-      .catch((e: any) => this.fail(e));
+      .catch((e: any) => {
+        // Allow a retry of the same value after a failed save.
+        this.lastSavedFamily = null;
+        this.fail(e);
+      });
   }
 
   // ---- State helpers ----------------------------------------------------

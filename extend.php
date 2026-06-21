@@ -9,8 +9,10 @@
 use ErnestDefoe\GoogleFonts\Api\Controller\DeleteFontController;
 use ErnestDefoe\GoogleFonts\Api\Controller\SetFontFamilyController;
 use ErnestDefoe\GoogleFonts\Api\Controller\UploadFontController;
+use ErnestDefoe\GoogleFonts\Console\GcFontsCommand;
 use ErnestDefoe\GoogleFonts\InjectFonts;
 use Flarum\Extend;
+use Illuminate\Console\Scheduling\Event;
 
 return [
     // Inject the chosen fonts (Google <link> and/or self-hosted @font-face) +
@@ -31,4 +33,12 @@ return [
         ->post('/ernestdefoe/google-fonts/font-family', 'ernestdefoe-google-fonts.family', SetFontFamilyController::class),
 
     new Extend\Locales(__DIR__ . '/locale'),
+
+    // GC orphaned uploaded font files (e.g. left behind if the settings blob was
+    // reset outside the normal delete flow). Runnable manually, and swept weekly.
+    (new Extend\Console())
+        ->command(GcFontsCommand::class)
+        ->schedule('ernestdefoe-google-fonts:gc', function (Event $event) {
+            $event->weekly();
+        }),
 ];
