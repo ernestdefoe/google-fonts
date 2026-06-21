@@ -4,7 +4,14 @@ import FontPicker from './components/FontPicker';
 
 const KEY = 'ernestdefoe-google-fonts.';
 
-const t = (k: string) => app.translator.trans('ernestdefoe-google-fonts.admin.' + k);
+const t = (k: string, params?: Record<string, unknown>) =>
+  app.translator.trans('ernestdefoe-google-fonts.admin.' + k, params);
+
+// A link to the Google Fonts library, woven into the body-font help text so
+// admins can jump straight there to browse families (#1).
+const fontsLibraryLink = () => (
+  <a href="https://fonts.google.com/" target="_blank" rel="noopener noreferrer" />
+);
 
 export const extend = [
   new Extend.Admin()
@@ -16,7 +23,7 @@ export const extend = [
         slot: 'body',
         stream: this.setting(KEY + 'body_font'),
         label: t('body_font_label'),
-        help: t('body_font_help'),
+        help: t('body_font_help', { a: fontsLibraryLink() }),
         heading: false,
       });
     }, 20)
