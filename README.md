@@ -65,9 +65,11 @@ composer update ernestdefoe/google-fonts
 php flarum cache:clear
 ```
 
-## Discuss
+## Support
 
-Questions, ideas and release notes: [Google Fonts on discuss.flarum.org](https://discuss.flarum.org/d/39386-google-fonts).
+- **Support forum:** [Google Fonts on ernestdefoe.online](https://ernestdefoe.online/d/54)
+- **Flarum community:** [Google Fonts on discuss.flarum.org](https://discuss.flarum.org/d/39386-google-fonts)
+- **Bug reports:** [GitHub issues](https://github.com/ernestdefoe/google-fonts/issues)
 
 ## License
 
