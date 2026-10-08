@@ -38,7 +38,7 @@ return [
     // reset outside the normal delete flow). Runnable manually, and swept weekly.
     (new Extend\Console())
         ->command(GcFontsCommand::class)
-        ->schedule('ernestdefoe-google-fonts:gc', function (Event $event) {
+        ->schedule(GcFontsCommand::class, function (Event $event) {
             $event->weekly();
         }),
 ];
