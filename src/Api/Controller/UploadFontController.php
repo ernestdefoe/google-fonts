@@ -67,7 +67,6 @@ class UploadFontController implements RequestHandlerInterface
         RequestUtil::getActor($request)->assertAdmin();
 
         try {
-
             $body = (array) $request->getParsedBody();
             $slot = $this->assertSlot(Arr::get($body, 'slot'));
             $weight = $this->assertWeight(Arr::get($body, 'weight'));

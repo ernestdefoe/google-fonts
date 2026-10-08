@@ -49,7 +49,6 @@ class DeleteFontController implements RequestHandlerInterface
         RequestUtil::getActor($request)->assertAdmin();
 
         try {
-
             $body = (array) $request->getParsedBody();
             $slot = $this->assertSlot(Arr::get($body, 'slot'));
 
