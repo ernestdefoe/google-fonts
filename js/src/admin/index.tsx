@@ -4,7 +4,7 @@ import FontPicker from './components/FontPicker';
 
 const KEY = 'ernestdefoe-google-fonts.';
 
-const t = (k: string, params?: Record<string, unknown>) =>
+const t = (k: string, params: Record<string, unknown> = {}) =>
   app.translator.trans('ernestdefoe-google-fonts.admin.' + k, params);
 
 // A link to the Google Fonts library, woven into the body-font help text so

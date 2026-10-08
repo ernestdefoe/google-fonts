@@ -36,8 +36,10 @@ interface FontPickerAttrs {
 }
 
 const api = (path: string) => app.forum.attribute('apiUrl') + path;
-const t = (k: string, params?: Record<string, unknown>) =>
+const t = (k: string, params: Record<string, unknown> = {}) =>
   app.translator.trans('ernestdefoe-google-fonts.admin.' + k, params);
+/** The same message as plain text, for attributes and error strings. */
+const text = (k: string) => app.translator.trans('ernestdefoe-google-fonts.admin.' + k, {}, true);
 
 /**
  * A font picker with two modes:
@@ -102,7 +104,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
           <button
             type="button"
             className="Button GoogleFontPicker-clear"
-            title={t('clear') as string}
+            title={text('clear')}
             onclick={() => this.attrs.stream('')}
           >
             <i className="fas fa-times" />
@@ -157,7 +159,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
                 <button
                   type="button"
                   className="Button Button--icon GoogleFontPicker-faceRemove"
-                  title={t('remove_weight') as string}
+                  title={text('remove_weight')}
                   onclick={() => this.removeFace(f.weight)}
                 >
                   <i className="fas fa-times" />
@@ -253,7 +255,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
   private upload(file: File): void {
     if (this.uploading) return;
     if (!/\.woff2$/i.test(file.name)) {
-      this.error = t('only_woff2') as string;
+      this.error = text('only_woff2');
       m.redraw();
       return;
     }
@@ -391,7 +393,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
   }
 
   private fail(e: any): void {
-    this.error = e?.response?.errors?.[0]?.detail || (t('upload_error') as string);
+    this.error = e?.response?.errors?.[0]?.detail || text('upload_error');
     m.redraw();
   }
 
