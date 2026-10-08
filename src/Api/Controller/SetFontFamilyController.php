@@ -44,7 +44,7 @@ class SetFontFamilyController implements RequestHandlerInterface
         $slot = $this->assertSlot(Arr::get($body, 'slot'));
         $family = trim((string) preg_replace('/[^A-Za-z0-9 ]/', '', (string) Arr::get($body, 'family', '')));
 
-        $this->settings->set('ernestdefoe-google-fonts.' . $slot . '_font', $family);
+        $this->settings->set('ernestdefoe-google-fonts.'.$slot.'_font', $family);
 
         return new JsonResponse([
             'data' => [

@@ -27,7 +27,7 @@ class GcFontsCommand extends Command
         // Every path still referenced by a saved face, across both slots.
         $referenced = [];
         foreach (['body', 'heading'] as $slot) {
-            $raw = $settings->get('ernestdefoe-google-fonts.' . $slot . '_font_faces');
+            $raw = $settings->get('ernestdefoe-google-fonts.'.$slot.'_font_faces');
             $faces = $raw ? json_decode((string) $raw, true) : [];
             if (is_array($faces)) {
                 foreach ($faces as $face) {
@@ -52,12 +52,12 @@ class GcFontsCommand extends Command
             }
 
             $count++;
-            $this->info(($dry ? '[dry-run] orphan: ' : 'deleting: ') . $path);
+            $this->info(($dry ? '[dry-run] orphan: ' : 'deleting: ').$path);
             if (! $dry) {
                 try {
                     $disk->delete($path);
                 } catch (\Throwable $e) {
-                    $this->error('  failed: ' . $e->getMessage());
+                    $this->error('  failed: '.$e->getMessage());
                     $count--;
                 }
             }

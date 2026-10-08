@@ -62,7 +62,7 @@ class DeleteFontController implements RequestHandlerInterface
                 // to Google mode and request a non-existent family.
                 $this->deleteFiles($faces);
                 $faces = [];
-                $this->settings->set('ernestdefoe-google-fonts.' . $slot . '_font', '');
+                $this->settings->set('ernestdefoe-google-fonts.'.$slot.'_font', '');
             } else {
                 $weight = $this->assertWeight($weightRaw);
                 if (isset($faces[$weight])) {
@@ -88,8 +88,9 @@ class DeleteFontController implements RequestHandlerInterface
             $this->log->error('[google-fonts] DeleteFontController failed', [
                 'exception' => get_class($e),
                 'message' => $e->getMessage(),
-                'file' => $e->getFile() . ':' . $e->getLine(),
+                'file' => $e->getFile().':'.$e->getLine(),
             ]);
+
             return new JsonResponse(['errors' => [['status' => '500', 'detail' => 'Delete failed.']]], 500);
         }
     }
@@ -100,7 +101,10 @@ class DeleteFontController implements RequestHandlerInterface
         foreach ($faces as $face) {
             $path = (string) ($face['path'] ?? '');
             if ($path !== '' && $this->disk->exists($path)) {
-                try { $this->disk->delete($path); } catch (\Throwable) { /* ignore */ }
+                try {
+                    $this->disk->delete($path);
+                } catch (\Throwable) { /* ignore */
+                }
             }
         }
     }

@@ -49,7 +49,7 @@ trait FontSlotTrait
     /** @return array<int, array{weight:int,path:string,url:string}> keyed by weight */
     protected function readFaces(string $slot): array
     {
-        $raw = (string) $this->settings->get('ernestdefoe-google-fonts.' . $slot . '_font_faces', '');
+        $raw = (string) $this->settings->get('ernestdefoe-google-fonts.'.$slot.'_font_faces', '');
         if ($raw === '') {
             return [];
         }
@@ -83,9 +83,10 @@ trait FontSlotTrait
     /** @param array<int, array> $faces */
     protected function writeFaces(string $slot, array $faces): void
     {
-        $key = 'ernestdefoe-google-fonts.' . $slot . '_font_faces';
+        $key = 'ernestdefoe-google-fonts.'.$slot.'_font_faces';
         if (empty($faces)) {
             $this->settings->delete($key);
+
             return;
         }
 

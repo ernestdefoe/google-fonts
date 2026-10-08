@@ -22,8 +22,8 @@ return [
         ->content(InjectFonts::class),
 
     (new Extend\Frontend('admin'))
-        ->js(__DIR__ . '/js/dist/admin.js')
-        ->css(__DIR__ . '/less/admin.less'),
+        ->js(__DIR__.'/js/dist/admin.js')
+        ->css(__DIR__.'/less/admin.less'),
 
     // Admin-only endpoints powering the "upload your own font" path, so the
     // forum can self-host fonts and work where Google Fonts is blocked.
@@ -32,7 +32,7 @@ return [
         ->delete('/ernestdefoe/google-fonts/font', 'ernestdefoe-google-fonts.delete', DeleteFontController::class)
         ->post('/ernestdefoe/google-fonts/font-family', 'ernestdefoe-google-fonts.family', SetFontFamilyController::class),
 
-    new Extend\Locales(__DIR__ . '/locale'),
+    new Extend\Locales(__DIR__.'/locale'),
 
     // GC orphaned uploaded font files (e.g. left behind if the settings blob was
     // reset outside the normal delete flow). Runnable manually, and swept weekly.

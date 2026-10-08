@@ -136,7 +136,7 @@ class FontsTest extends TestCase
     #[Test]
     public function an_uploaded_woff2_is_self_hosted_and_named_from_its_file()
     {
-        [$status, $body] = $this->upload('body', 700, "wOF2".str_repeat("\0", 60));
+        [$status, $body] = $this->upload('body', 700, 'wOF2'.str_repeat("\0", 60));
 
         $this->assertSame(200, $status, json_encode($body));
         $this->assertSame('Inter', $body['data']['attributes']['family']);
@@ -155,16 +155,16 @@ class FontsTest extends TestCase
     public function only_a_real_woff2_file_is_accepted()
     {
         $this->assertSame(422, $this->upload('body', 400, '<?php echo 1;', 'shell.woff2')[0], 'Wrong signature');
-        $this->assertSame(422, $this->upload('body', 400, "wOF2rest", 'font.ttf')[0], 'Wrong extension');
-        $this->assertSame(422, $this->upload('body', 450, "wOF2rest")[0], 'Not a weight');
+        $this->assertSame(422, $this->upload('body', 400, 'wOF2rest', 'font.ttf')[0], 'Wrong extension');
+        $this->assertSame(422, $this->upload('body', 450, 'wOF2rest')[0], 'Not a weight');
         $this->assertNull($this->stored('body_font_faces'));
     }
 
     #[Test]
     public function deleting_a_weight_or_a_whole_slot()
     {
-        $this->upload('heading', 400, "wOF2aaaa", 'Sora-Regular.woff2');
-        $this->upload('heading', 700, "wOF2bbbb", 'Sora-Bold.woff2');
+        $this->upload('heading', 400, 'wOF2aaaa', 'Sora-Regular.woff2');
+        $this->upload('heading', 700, 'wOF2bbbb', 'Sora-Bold.woff2');
         $this->assertSame('Sora', $this->stored('heading_font'));
 
         [$status, $body] = $this->json('DELETE', '/api/ernestdefoe/google-fonts/font', 1, ['slot' => 'heading', 'weight' => 400]);

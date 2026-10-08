@@ -58,22 +58,22 @@ class InjectFonts
                 continue;
             }
             foreach ($slot['faces'] as $face) {
-                $key = $slot['family'] . '|' . $face['weight'];
+                $key = $slot['family'].'|'.$face['weight'];
                 if (isset($emitted[$key])) {
                     continue;
                 }
                 $emitted[$key] = true;
                 $faceCss .= '@font-face{'
-                    . 'font-family:"' . $slot['family'] . '";'
-                    . 'font-style:normal;'
-                    . 'font-weight:' . $face['weight'] . ';'
-                    . 'font-display:swap;'
-                    . 'src:url("' . $face['url'] . '") format("woff2");'
-                    . '}';
+                    .'font-family:"'.$slot['family'].'";'
+                    .'font-style:normal;'
+                    .'font-weight:'.$face['weight'].';'
+                    .'font-display:swap;'
+                    .'src:url("'.$face['url'].'") format("woff2");'
+                    .'}';
             }
         }
         if ($faceCss !== '') {
-            $document->head[] = '<style>' . $faceCss . '</style>';
+            $document->head[] = '<style>'.$faceCss.'</style>';
         }
 
         // --- Google css2 stylesheet for any slot still in Google mode --------
@@ -95,27 +95,27 @@ class InjectFonts
         if (! empty($families)) {
             $params = [];
             foreach ($families as $family => $weights) {
-                $params[] = 'family=' . str_replace(' ', '+', $family) . ':wght@' . $weights;
+                $params[] = 'family='.str_replace(' ', '+', $family).':wght@'.$weights;
             }
-            $href = 'https://fonts.googleapis.com/css2?' . implode('&', $params) . '&display=swap';
+            $href = 'https://fonts.googleapis.com/css2?'.implode('&', $params).'&display=swap';
             $safeHref = htmlspecialchars($href, ENT_QUOTES);
 
             $document->head[] = '<link rel="preconnect" href="https://fonts.googleapis.com">';
             $document->head[] = '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
             // Non-render-blocking: load as print, then promote to all once it
             // arrives. <noscript> keeps it working with JS disabled.
-            $document->head[] = '<link rel="stylesheet" href="' . $safeHref
-                . '" media="print" onload="this.media=&#39;all&#39;">';
-            $document->head[] = '<noscript><link rel="stylesheet" href="' . $safeHref . '"></noscript>';
+            $document->head[] = '<link rel="stylesheet" href="'.$safeHref
+                .'" media="print" onload="this.media=&#39;all&#39;">';
+            $document->head[] = '<noscript><link rel="stylesheet" href="'.$safeHref.'"></noscript>';
         }
 
         // --- :root variables + the actual font-family overrides --------------
         $css = ':root{';
         if ($slots['body'] !== null) {
-            $css .= '--ernestdefoe-gf-body:"' . $slots['body']['family'] . '",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;';
+            $css .= '--ernestdefoe-gf-body:"'.$slots['body']['family'].'",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;';
         }
         if ($slots['heading'] !== null) {
-            $css .= '--ernestdefoe-gf-heading:"' . $slots['heading']['family'] . '",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;';
+            $css .= '--ernestdefoe-gf-heading:"'.$slots['heading']['family'].'",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;';
         }
         $css .= '}';
 
@@ -126,7 +126,7 @@ class InjectFonts
             $css .= 'h1,h2,h3,h4,h5,h6,.Hero-title{font-family:var(--ernestdefoe-gf-heading)!important;}';
         }
 
-        $document->head[] = '<style>' . $css . '</style>';
+        $document->head[] = '<style>'.$css.'</style>';
     }
 
     /**
@@ -135,7 +135,7 @@ class InjectFonts
      */
     private function resolveSlot(string $name): ?array
     {
-        $family = $this->cleanFamily((string) $this->settings->get('ernestdefoe-google-fonts.' . $name . '_font', ''));
+        $family = $this->cleanFamily((string) $this->settings->get('ernestdefoe-google-fonts.'.$name.'_font', ''));
         if ($family === '') {
             return null;
         }
@@ -154,7 +154,7 @@ class InjectFonts
      */
     private function faces(string $name): array
     {
-        $raw = (string) $this->settings->get('ernestdefoe-google-fonts.' . $name . '_font_faces', '');
+        $raw = (string) $this->settings->get('ernestdefoe-google-fonts.'.$name.'_font_faces', '');
         if ($raw === '') {
             return [];
         }

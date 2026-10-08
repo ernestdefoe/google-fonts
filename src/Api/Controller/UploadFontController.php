@@ -49,7 +49,7 @@ class UploadFontController implements RequestHandlerInterface
     public const MAX_BYTES = 3 * 1024 * 1024;
 
     /** WOFF2 files begin with the ASCII signature "wOF2". */
-    public const WOFF2_SIGNATURE = "wOF2";
+    public const WOFF2_SIGNATURE = 'wOF2';
 
     protected Cloud $disk;
 
@@ -81,7 +81,7 @@ class UploadFontController implements RequestHandlerInterface
             $size = $file->getSize();
             if ($size === null || $size <= 0 || $size > self::MAX_BYTES) {
                 throw new ValidationException([
-                    'font' => 'Font must be 1 byte to ' . self::MAX_BYTES . ' bytes.',
+                    'font' => 'Font must be 1 byte to '.self::MAX_BYTES.' bytes.',
                 ]);
             }
 
@@ -105,11 +105,14 @@ class UploadFontController implements RequestHandlerInterface
             if (isset($faces[$weight]['path'])) {
                 $old = $faces[$weight]['path'];
                 if ($old && $this->disk->exists($old)) {
-                    try { $this->disk->delete($old); } catch (\Throwable) { /* ignore */ }
+                    try {
+                        $this->disk->delete($old);
+                    } catch (\Throwable) { /* ignore */
+                    }
                 }
             }
 
-            $uploadName = 'ed-gf-' . $slot . '-' . $weight . '-' . Str::lower(Str::random(10)) . '.woff2';
+            $uploadName = 'ed-gf-'.$slot.'-'.$weight.'-'.Str::lower(Str::random(10)).'.woff2';
             $this->disk->put($uploadName, $contents);
             $url = $this->disk->url($uploadName);
 
@@ -119,7 +122,7 @@ class UploadFontController implements RequestHandlerInterface
             // Give the slot a family name if it doesn't have one yet, so the
             // self-hosted font can be referenced immediately. Derived from the
             // uploaded filename; the admin can rename it afterwards.
-            $familyKey = 'ernestdefoe-google-fonts.' . $slot . '_font';
+            $familyKey = 'ernestdefoe-google-fonts.'.$slot.'_font';
             $family = trim((string) $this->settings->get($familyKey, ''));
             if ($family === '') {
                 $family = $this->familyFromFilename((string) $file->getClientFilename(), $slot);
@@ -142,8 +145,9 @@ class UploadFontController implements RequestHandlerInterface
             $this->log->error('[google-fonts] UploadFontController failed', [
                 'exception' => get_class($e),
                 'message' => $e->getMessage(),
-                'file' => $e->getFile() . ':' . $e->getLine(),
+                'file' => $e->getFile().':'.$e->getLine(),
             ]);
+
             return new JsonResponse(['errors' => [['status' => '500', 'detail' => 'Upload failed.']]], 500);
         }
     }
@@ -158,6 +162,6 @@ class UploadFontController implements RequestHandlerInterface
         $base = trim((string) preg_replace('/\b(thin|extralight|light|regular|medium|semibold|bold|extrabold|black|italic|\d{3})\b/i', '', $base));
         $base = trim((string) preg_replace('/\s+/', ' ', $base));
 
-        return $base !== '' ? $base : ('Custom ' . ucfirst($slot) . ' Font');
+        return $base !== '' ? $base : ('Custom '.ucfirst($slot).' Font');
     }
 }
