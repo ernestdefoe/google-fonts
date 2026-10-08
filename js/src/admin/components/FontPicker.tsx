@@ -36,8 +36,7 @@ interface FontPickerAttrs {
 }
 
 const api = (path: string) => app.forum.attribute('apiUrl') + path;
-const t = (k: string, params: Record<string, unknown> = {}) =>
-  app.translator.trans('ernestdefoe-google-fonts.admin.' + k, params);
+const t = (k: string, params: Record<string, unknown> = {}) => app.translator.trans('ernestdefoe-google-fonts.admin.' + k, params);
 /** The same message as plain text, for attributes and error strings. */
 const text = (k: string) => app.translator.trans('ernestdefoe-google-fonts.admin.' + k, {}, true);
 
@@ -101,21 +100,13 @@ export default class FontPicker extends Component<FontPickerAttrs> {
           }}
         />
         {value && (
-          <button
-            type="button"
-            className="Button GoogleFontPicker-clear"
-            title={text('clear')}
-            onclick={() => this.attrs.stream('')}
-          >
+          <button type="button" className="Button GoogleFontPicker-clear" title={text('clear')} onclick={() => this.attrs.stream('')}>
             <i className="fas fa-times" />
           </button>
         )}
       </div>,
 
-      <div
-        className={'GoogleFontPicker-preview' + (this.attrs.heading ? ' GoogleFontPicker-preview--heading' : '')}
-        style={{ fontFamily: stack }}
-      >
+      <div className={'GoogleFontPicker-preview' + (this.attrs.heading ? ' GoogleFontPicker-preview--heading' : '')} style={{ fontFamily: stack }}>
         {value ? t('preview_text') : t('no_font')}
       </div>,
 
@@ -136,8 +127,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
     return [
       <div className="GoogleFontPicker-hint">{t('upload_hint')}</div>,
 
-      <label className="GoogleFontPicker-familyLabel">{t('family_name')}</label>
-      ,
+      <label className="GoogleFontPicker-familyLabel">{t('family_name')}</label>,
       <input
         className="FormControl"
         spellcheck={false}
@@ -210,10 +200,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
       </div>,
 
       this.faces.length > 0 && (
-        <div
-          className={'GoogleFontPicker-preview' + (this.attrs.heading ? ' GoogleFontPicker-preview--heading' : '')}
-          style={{ fontFamily: stack }}
-        >
+        <div className={'GoogleFontPicker-preview' + (this.attrs.heading ? ' GoogleFontPicker-preview--heading' : '')} style={{ fontFamily: stack }}>
           {family ? t('preview_text') : t('name_your_font')}
         </div>
       ),
@@ -371,9 +358,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
       const raw = app.data.settings[KEY + this.attrs.slot + '_font_faces'];
       const arr = raw ? JSON.parse(raw) : [];
       return Array.isArray(arr)
-        ? arr
-            .filter((f: any) => f && typeof f.weight === 'number' && typeof f.url === 'string')
-            .map((f: any) => ({ weight: f.weight, url: f.url }))
+        ? arr.filter((f: any) => f && typeof f.weight === 'number' && typeof f.url === 'string').map((f: any) => ({ weight: f.weight, url: f.url }))
         : [];
     } catch {
       return [];
@@ -417,8 +402,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
     style.textContent = this.faces
       .map(
         (f) =>
-          `@font-face{font-family:"${family}";font-style:normal;font-weight:${f.weight};` +
-          `font-display:swap;src:url("${f.url}") format("woff2");}`
+          `@font-face{font-family:"${family}";font-style:normal;font-weight:${f.weight};` + `font-display:swap;src:url("${f.url}") format("woff2");}`
       )
       .join('');
   }
