@@ -45,8 +45,10 @@ class DeleteFontController implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        // Outside the try: its catch-all turned a refusal into a 500.
+        RequestUtil::getActor($request)->assertAdmin();
+
         try {
-            RequestUtil::getActor($request)->assertAdmin();
 
             $body = (array) $request->getParsedBody();
             $slot = $this->assertSlot(Arr::get($body, 'slot'));
