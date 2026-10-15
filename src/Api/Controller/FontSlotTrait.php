@@ -18,7 +18,8 @@ use Flarum\Foundation\ValidationException;
  * ['weight' => int, 'path' => string, 'url' => string]. In memory we key them
  * by weight so a re-upload of the same weight replaces in place.
  *
- * Requires the using class to expose a SettingsRepositoryInterface $settings.
+ * Requires the using class to expose a SettingsRepositoryInterface $settings
+ * and a TranslatorInterface $translator.
  */
 trait FontSlotTrait
 {
@@ -30,7 +31,7 @@ trait FontSlotTrait
     {
         $slot = is_string($value) ? strtolower(trim($value)) : '';
         if (! in_array($slot, self::SLOTS, true)) {
-            throw new ValidationException(['slot' => 'Invalid font slot.']);
+            throw new ValidationException(['slot' => $this->translator->trans('ernestdefoe-google-fonts.api.invalid_slot')]);
         }
 
         return $slot;
@@ -40,7 +41,7 @@ trait FontSlotTrait
     {
         $weight = (int) $value;
         if (! in_array($weight, self::WEIGHTS, true)) {
-            throw new ValidationException(['weight' => 'Invalid font weight.']);
+            throw new ValidationException(['weight' => $this->translator->trans('ernestdefoe-google-fonts.api.invalid_weight')]);
         }
 
         return $weight;

@@ -9,6 +9,7 @@
 namespace ErnestDefoe\GoogleFonts\Api\Controller;
 
 use Flarum\Http\RequestUtil;
+use Flarum\Locale\TranslatorInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Cloud;
@@ -39,6 +40,7 @@ class DeleteFontController implements RequestHandlerInterface
         protected SettingsRepositoryInterface $settings,
         Container $container,
         protected LoggerInterface $log,
+        protected TranslatorInterface $translator,
     ) {
         $this->disk = $container->make('filesystem')->disk('flarum-assets');
     }
@@ -90,7 +92,7 @@ class DeleteFontController implements RequestHandlerInterface
                 'file' => $e->getFile().':'.$e->getLine(),
             ]);
 
-            return new JsonResponse(['errors' => [['status' => '500', 'detail' => 'Delete failed.']]], 500);
+            return new JsonResponse(['errors' => [['status' => '500', 'detail' => $this->translator->trans('ernestdefoe-google-fonts.api.delete_failed')]]], 500);
         }
     }
 

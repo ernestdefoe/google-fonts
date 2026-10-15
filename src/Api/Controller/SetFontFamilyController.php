@@ -9,6 +9,7 @@
 namespace ErnestDefoe\GoogleFonts\Api\Controller;
 
 use Flarum\Http\RequestUtil;
+use Flarum\Locale\TranslatorInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\Arr;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -33,6 +34,7 @@ class SetFontFamilyController implements RequestHandlerInterface
 
     public function __construct(
         protected SettingsRepositoryInterface $settings,
+        protected TranslatorInterface $translator,
     ) {
     }
 

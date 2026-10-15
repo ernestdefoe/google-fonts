@@ -7,18 +7,8 @@ import { GOOGLE_FONTS } from '../../common/fonts';
 const DATALIST_ID = 'ernestdefoe-gf-list';
 const KEY = 'ernestdefoe-google-fonts.';
 
-/** Weights offered for self-hosted uploads, heaviest concept last. */
-const WEIGHTS: { value: number; label: string }[] = [
-  { value: 100, label: 'Thin' },
-  { value: 200, label: 'Extra Light' },
-  { value: 300, label: 'Light' },
-  { value: 400, label: 'Regular' },
-  { value: 500, label: 'Medium' },
-  { value: 600, label: 'Semi Bold' },
-  { value: 700, label: 'Bold' },
-  { value: 800, label: 'Extra Bold' },
-  { value: 900, label: 'Black' },
-];
+/** Weights offered for self-hosted uploads, heaviest concept last. Names live in the locale (weight_100 … weight_900). */
+const WEIGHTS: { value: number }[] = [100, 200, 300, 400, 500, 600, 700, 800, 900].map((value) => ({ value }));
 
 interface Face {
   weight: number;
@@ -140,11 +130,11 @@ export default class FontPicker extends Component<FontPickerAttrs> {
       this.faces.length > 0 && (
         <ul className="GoogleFontPicker-faces">
           {this.faces.map((f) => {
-            const label = WEIGHTS.find((w) => w.value === f.weight);
+            const named = WEIGHTS.some((w) => w.value === f.weight);
             return (
               <li className="GoogleFontPicker-face" key={f.weight}>
                 <span className="GoogleFontPicker-faceWeight">
-                  {f.weight} <span className="GoogleFontPicker-faceName">{label ? label.label : ''}</span>
+                  {f.weight} <span className="GoogleFontPicker-faceName">{named ? text('weight_' + f.weight) : ''}</span>
                 </span>
                 <button
                   type="button"
@@ -171,7 +161,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
         >
           {available.map((w) => (
             <option value={String(w.value)}>
-              {w.value} — {w.label}
+              {w.value} — {text('weight_' + w.value)}
             </option>
           ))}
         </select>

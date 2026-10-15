@@ -10,6 +10,7 @@ namespace ErnestDefoe\GoogleFonts\Api\Controller;
 
 use Flarum\Foundation\ValidationException;
 use Flarum\Http\RequestUtil;
+use Flarum\Locale\TranslatorInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Cloud;
@@ -57,6 +58,7 @@ class UploadFontController implements RequestHandlerInterface
         protected SettingsRepositoryInterface $settings,
         Container $container,
         protected LoggerInterface $log,
+        protected TranslatorInterface $translator,
     ) {
         $this->disk = $container->make('filesystem')->disk('flarum-assets');
     }
@@ -74,26 +76,26 @@ class UploadFontController implements RequestHandlerInterface
             /** @var UploadedFileInterface|null $file */
             $file = Arr::get($request->getUploadedFiles(), 'font');
             if (! $file || $file->getError() !== UPLOAD_ERR_OK) {
-                throw new ValidationException(['font' => 'No file uploaded.']);
+                throw new ValidationException(['font' => $this->translator->trans('ernestdefoe-google-fonts.api.no_file')]);
             }
 
             $size = $file->getSize();
             if ($size === null || $size <= 0 || $size > self::MAX_BYTES) {
                 throw new ValidationException([
-                    'font' => 'Font must be 1 byte to '.self::MAX_BYTES.' bytes.',
+                    'font' => $this->translator->trans('ernestdefoe-google-fonts.api.size', ['max' => self::MAX_BYTES]),
                 ]);
             }
 
             $ext = strtolower(pathinfo((string) $file->getClientFilename(), PATHINFO_EXTENSION));
             if ($ext !== 'woff2') {
-                throw new ValidationException(['font' => 'Only .woff2 font files are allowed.']);
+                throw new ValidationException(['font' => $this->translator->trans('ernestdefoe-google-fonts.api.woff2_only')]);
             }
 
             $stream = $file->getStream();
             $stream->rewind();
             $signature = $stream->read(4);
             if ($signature !== self::WOFF2_SIGNATURE) {
-                throw new ValidationException(['font' => 'File is not a valid WOFF2 font.']);
+                throw new ValidationException(['font' => $this->translator->trans('ernestdefoe-google-fonts.api.not_woff2')]);
             }
             $stream->rewind();
             $contents = $stream->getContents();
@@ -147,7 +149,7 @@ class UploadFontController implements RequestHandlerInterface
                 'file' => $e->getFile().':'.$e->getLine(),
             ]);
 
-            return new JsonResponse(['errors' => [['status' => '500', 'detail' => 'Upload failed.']]], 500);
+            return new JsonResponse(['errors' => [['status' => '500', 'detail' => $this->translator->trans('ernestdefoe-google-fonts.api.upload_failed')]]], 500);
         }
     }
 
