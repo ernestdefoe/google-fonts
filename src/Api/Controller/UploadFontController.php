@@ -12,8 +12,8 @@ use Flarum\Foundation\ValidationException;
 use Flarum\Http\RequestUtil;
 use Flarum\Locale\TranslatorInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Filesystem\Cloud;
+use Illuminate\Contracts\Filesystem\Factory;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Laminas\Diactoros\Response\JsonResponse;
@@ -56,11 +56,11 @@ class UploadFontController implements RequestHandlerInterface
 
     public function __construct(
         protected SettingsRepositoryInterface $settings,
-        Container $container,
+        Factory $filesystem,
         protected LoggerInterface $log,
         protected TranslatorInterface $translator,
     ) {
-        $this->disk = $container->make('filesystem')->disk('flarum-assets');
+        $this->disk = $filesystem->disk('flarum-assets');
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

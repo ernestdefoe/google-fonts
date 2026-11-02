@@ -127,6 +127,25 @@ export default class FontPicker extends Component<FontPickerAttrs> {
         onchange={() => this.saveFamily()}
       />,
 
+      this.faceList(),
+
+      this.addWeightRow(available),
+
+      this.faces.length > 0 && (
+        <div className={'GoogleFontPicker-preview' + (this.attrs.heading ? ' GoogleFontPicker-preview--heading' : '')} style={{ fontFamily: stack }}>
+          {family ? t('preview_text') : t('name_your_font')}
+        </div>
+      ),
+
+      <button type="button" className="Button Button--text GoogleFontPicker-switch" onclick={() => this.switchToGoogle()}>
+        <i className="fab fa-google" /> {t('switch_to_google')}
+      </button>,
+    ];
+  }
+
+  /** The uploaded weights, each with a remove button. */
+  private faceList(): Mithril.Children {
+    return (
       this.faces.length > 0 && (
         <ul className="GoogleFontPicker-faces">
           {this.faces.map((f) => {
@@ -148,13 +167,20 @@ export default class FontPicker extends Component<FontPickerAttrs> {
             );
           })}
         </ul>
-      ),
+      )
+    );
+  }
 
+  /** Weight picker + file input that uploads the next weight. */
+  private addWeightRow(available: typeof WEIGHTS): Mithril.Children {
+    const disabled = this.uploading || available.length === 0;
+
+    return (
       <div className="GoogleFontPicker-addRow">
         <select
           className="FormControl GoogleFontPicker-weightSelect"
           value={String(this.pendingWeight)}
-          disabled={this.uploading || available.length === 0}
+          disabled={disabled}
           onchange={(e: Event) => {
             this.pendingWeight = parseInt((e.target as HTMLSelectElement).value, 10);
           }}
@@ -166,7 +192,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
           ))}
         </select>
 
-        <label className={'Button GoogleFontPicker-addBtn' + (this.uploading || available.length === 0 ? ' disabled' : '')}>
+        <label className={'Button GoogleFontPicker-addBtn' + (disabled ? ' disabled' : '')}>
           {this.uploading ? (
             <span>
               <LoadingIndicator display="inline" size="small" /> {t('uploading')}
@@ -179,7 +205,7 @@ export default class FontPicker extends Component<FontPickerAttrs> {
           <input
             type="file"
             accept=".woff2"
-            disabled={this.uploading || available.length === 0}
+            disabled={disabled}
             onchange={(e: any) => {
               const file = e.target.files?.[0];
               if (file) this.upload(file);
@@ -187,18 +213,8 @@ export default class FontPicker extends Component<FontPickerAttrs> {
             }}
           />
         </label>
-      </div>,
-
-      this.faces.length > 0 && (
-        <div className={'GoogleFontPicker-preview' + (this.attrs.heading ? ' GoogleFontPicker-preview--heading' : '')} style={{ fontFamily: stack }}>
-          {family ? t('preview_text') : t('name_your_font')}
-        </div>
-      ),
-
-      <button type="button" className="Button Button--text GoogleFontPicker-switch" onclick={() => this.switchToGoogle()}>
-        <i className="fab fa-google" /> {t('switch_to_google')}
-      </button>,
-    ];
+      </div>
+    );
   }
 
   // ---- Mode switching ---------------------------------------------------
@@ -355,6 +371,11 @@ export default class FontPicker extends Component<FontPickerAttrs> {
     }
   }
 
+  // Writing app.data.settings is deliberate: it is the saved baseline that
+  // AdminPage.isChanged() compares the streams against, and core's own
+  // saveSettings() updates it the same way after a save. Our uploads and
+  // family renames are saved server-side at once, so the baseline must move
+  // with them or the Save button would show changes that are already saved.
   private writeFacesToSettings(): void {
     const key = KEY + this.attrs.slot + '_font_faces';
     if (this.faces.length) app.data.settings[key] = JSON.stringify(this.faces);
